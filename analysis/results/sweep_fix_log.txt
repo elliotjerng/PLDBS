@@ -1,0 +1,67 @@
+Simulating Estimationdataset1 (target=1.5708, method=1, stop=60)...
+Simulation finished in 20.1 s
+  (1169 stim triggers)
+
+=== method 1 | target 90 deg (model conv.) = -180 deg (paper conv.) | 1133 pulses (19.5 Hz), beta peak 22.5 Hz
+  [ref] bias  11.76 deg (signed  -11.8)  std  27.89 deg | acc +/-30 78.4%  +/-45 89.6%  +/-90 97.4% | amp>2: +/-30 87.1%
+  [zp ] bias  70.75 deg (signed  +70.8)  std 103.84 deg | acc +/-30 19.5%  +/-45 28.7%  +/-90 53.3% | amp>2: +/-30 19.9%
+  artifact rel. error, window 49 samples = 12.0 ms
+    beta spectral amp : Kalman  1.86% | blank+interp  5.28% | hold  7.28% | zero 18.36% | none 3411%
+    beta envelope     : Kalman 13.42% | blank+interp  9.66% | hold 15.80% | zero 24.75% | none 3784%
+    corr(Kalman+bandpass, clean+bandpass) = 0.967
+Simulating Estimationdataset1 (target=2.3562, method=1, stop=60)...
+Simulation finished in 15.5 s
+  (1288 stim triggers)
+
+=== method 1 | target 135 deg (model conv.) = -135 deg (paper conv.) | 1239 pulses (21.4 Hz), beta peak 22.5 Hz
+  [ref] bias  12.86 deg (signed  -12.9)  std  26.97 deg | acc +/-30 76.3%  +/-45 90.3%  +/-90 98.1% | amp>2: +/-30 83.3%
+  [zp ] bias  70.60 deg (signed  +70.6)  std 107.33 deg | acc +/-30 16.9%  +/-45 27.0%  +/-90 54.9% | amp>2: +/-30 17.6%
+  artifact rel. error, window 49 samples = 12.0 ms
+    beta spectral amp : Kalman  3.55% | blank+interp  5.07% | hold  5.18% | zero 19.41% | none 3879%
+    beta envelope     : Kalman 13.64% | blank+interp  8.90% | hold 15.15% | zero 25.13% | none 4306%
+    corr(Kalman+bandpass, clean+bandpass) = 0.966
+Simulating Estimationdataset1 (target=1.5708, method=2, stop=60)...
+Simulation finished in 15.1 s
+  (1298 stim triggers)
+
+=== method 2 | target 90 deg (model conv.) = -180 deg (paper conv.) | 1253 pulses (21.6 Hz), beta peak 22.5 Hz
+  [ref] bias   0.24 deg (signed   +0.2)  std  22.18 deg | acc +/-30 89.3%  +/-45 93.8%  +/-90 98.6% | amp>2: +/-30 97.8%
+  [zp ] bias  89.41 deg (signed  +89.4)  std 105.93 deg | acc +/-30 15.6%  +/-45 25.1%  +/-90 51.0% | amp>2: +/-30 15.1%
+  artifact rel. error, window 49 samples = 12.0 ms
+    beta spectral amp : Kalman  1.92% | blank+interp  4.71% | hold  6.36% | zero 21.08% | none 3903%
+    beta envelope     : Kalman 13.70% | blank+interp  9.48% | hold 15.32% | zero 26.76% | none 4446%
+    corr(Kalman+bandpass, clean+bandpass) = 0.969
+Simulating Estimationdataset1 (target=2.3562, method=2, stop=60)...
+Simulation finished in 14.9 s
+  (1287 stim triggers)
+
+=== method 2 | target 135 deg (model conv.) = -135 deg (paper conv.) | 1243 pulses (21.4 Hz), beta peak 22.5 Hz
+  [ref] bias   1.06 deg (signed   -1.1)  std  22.70 deg | acc +/-30 89.9%  +/-45 94.7%  +/-90 98.1% | amp>2: +/-30 98.0%
+  [zp ] bias  90.27 deg (signed  +90.3)  std 107.11 deg | acc +/-30 16.9%  +/-45 23.3%  +/-90 51.0% | amp>2: +/-30 16.5%
+  artifact rel. error, window 49 samples = 12.0 ms
+    beta spectral amp : Kalman  3.93% | blank+interp  4.84% | hold  4.50% | zero 20.12% | none 3982%
+    beta envelope     : Kalman 13.84% | blank+interp  9.31% | hold 14.98% | zero 25.47% | none 4535%
+    corr(Kalman+bandpass, clean+bandpass) = 0.966
+Simulating Estimationdataset1 (target=1.5708, method=3, stop=60)...
+Simulation finished in 14.9 s
+  (1272 stim triggers)
+
+=== method 3 | target 90 deg (model conv.) = -180 deg (paper conv.) | 1229 pulses (21.2 Hz), beta peak 22.5 Hz
+  [ref] bias   3.01 deg (signed   +3.0)  std  29.69 deg | acc +/-30 83.0%  +/-45 88.9%  +/-90 96.8% | amp>2: +/-30 94.5%
+  [zp ] bias  88.30 deg (signed  +88.3)  std 108.28 deg | acc +/-30 16.1%  +/-45 25.1%  +/-90 50.4% | amp>2: +/-30 15.5%
+  artifact rel. error, window 49 samples = 12.0 ms
+    beta spectral amp : Kalman  2.22% | blank+interp  5.39% | hold  6.78% | zero 21.53% | none 3816%
+    beta envelope     : Kalman 14.08% | blank+interp  9.82% | hold 15.70% | zero 26.97% | none 4333%
+    corr(Kalman+bandpass, clean+bandpass) = 0.968
+Simulating Estimationdataset1 (target=2.3562, method=3, stop=60)...
+Simulation finished in 15.1 s
+  (1286 stim triggers)
+
+=== method 3 | target 135 deg (model conv.) = -135 deg (paper conv.) | 1243 pulses (21.4 Hz), beta peak 22.5 Hz
+  [ref] bias   0.49 deg (signed   +0.5)  std  30.34 deg | acc +/-30 80.9%  +/-45 89.4%  +/-90 96.3% | amp>2: +/-30 91.0%
+  [zp ] bias  84.39 deg (signed  +84.4)  std 113.43 deg | acc +/-30 15.4%  +/-45 24.5%  +/-90 51.9% | amp>2: +/-30 15.0%
+  artifact rel. error, window 49 samples = 12.0 ms
+    beta spectral amp : Kalman  3.13% | blank+interp  4.88% | hold  3.76% | zero 20.00% | none 3811%
+    beta envelope     : Kalman 13.26% | blank+interp  9.05% | hold 14.64% | zero 25.41% | none 4235%
+    corr(Kalman+bandpass, clean+bandpass) = 0.967
+Wrote /Users/elliotjerng/Columbia/Comp Neuro/PLDBS/analysis/results/baseline_summary.md
