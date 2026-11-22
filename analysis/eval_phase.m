@@ -32,23 +32,32 @@ if ~isfield(opts, 'fig'), opts.fig = ''; end
 
 fs = res.fs;
 N  = numel(res.stim);
-x  = res.rawNot(1:N, 2);
+if isfield(res, 'clean'), x = res.clean(:);          % input exactly as the model saw it
+else, x = res.rawNot(1:N, 2); end                    % older baseline runs
 skip = round(2*fs);                      % ignore filter/estimator start-up (2 s)
 
 % ---------- gold standards ----------
-[b, a]   = butter(2, 2/(fs/2), 'high');  x_hp = filtfilt(b, a, x);   % 2 Hz HP (Sec 2.4)
-[P, f]   = pwelch(x_hp(skip:end), 2*fs, fs, [], fs);
+% zp: always from the ORIGINAL 4096 Hz recording (true phase), sampled at each
+% pulse's actual time t = (n-1)/fs. rawNot row j has time j/4096.
+FS0 = 4096;
+S0  = load(fullfile(fileparts(fileparts(mfilename('fullpath'))), 'SimulnkModel', 'dataset1.mat'), 'rawNot');
+x0  = S0.rawNot(:, 2);
+[b, a]   = butter(2, 2/(FS0/2), 'high');  x0 = filtfilt(b, a, x0);   % 2 Hz HP (Sec 2.4)
+[P, f]   = pwelch(x0(2*FS0:min(end, 62*FS0)), 2*FS0, FS0, [], FS0);
 sel      = f >= 13 & f <= 30;  fpk = f(sel);  [~, i] = max(P(sel));  fpk = fpk(i);
-[b, a]   = butter(2, [fpk-2.5 fpk+2.5]/(fs/2));
-y_zp     = filtfilt(b, a, x_hp);
-an_zp    = hilbert(y_zp);
+[b, a]   = butter(2, [fpk-2.5 fpk+2.5]/(FS0/2));
+an0      = hilbert(filtfilt(b, a, x0));
 an_ref   = hilbert(res.simout(:));
 gold.ref = struct('ph', angle(an_ref), 'amp', abs(an_ref));
-gold.zp  = struct('ph', angle(an_zp),  'amp', abs(an_zp));
+gold.zp  = struct('an', an0);
 
 % ---------- delivered pulses ----------
 onAll = find(diff([0; res.stim(:) > 0.5]) > 0);
 on = onAll(onAll > skip);
+j  = (on - 1) * FS0 / fs;                            % fractional 4096 Hz row of each pulse
+a0 = interp1((1:numel(an0))', an0, j, 'linear');
+gold.ref.ph = gold.ref.ph(on);  gold.ref.amp = gold.ref.amp(on);
+gold.zp.ph  = angle(a0);         gold.zp.amp  = abs(a0);
 tgt = wrapToPi(res.target);
 tols = [0 2 5 10 15 20 25 30 45 60 90];
 
@@ -57,8 +66,8 @@ m = struct('target_model_deg', rad2deg(tgt), 'target_paper_deg', rad2deg(wrapToP
            'fpeak', fpk, 'tols', tols);
 for g = {'ref', 'zp'}
     G   = gold.(g{1});
-    err = wrapToPi(G.ph(on) - tgt);
-    amp = G.amp(on);
+    err = wrapToPi(G.ph - tgt);
+    amp = G.amp;
     s   = struct();
     s.err_deg  = rad2deg(err);
     s.amp      = amp;

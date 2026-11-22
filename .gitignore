@@ -1,3 +1,6 @@
 analysis/results/*.mat
 slprj/
 *.slxc
+SimulnkModel/Estimationdataset1_fs*.slx
+SimulnkModel/dataset1_fs*.mat
+*.slx.r20*

@@ -1,4 +1,4 @@
-function res = run_baseline(target, method, stopTime, tag, width_ms)
+function res = run_baseline(target, method, stopTime, tag, width_ms, cfg)
 %RUN_BASELINE Simulate SimulnkModel/Estimationdataset1.slx and save the outputs.
 %   res = run_baseline()                     % model exactly as shipped (Target 3*pi/4, NRO)
 %   res = run_baseline(target, method, stopTime, tag)
@@ -7,6 +7,9 @@ function res = run_baseline(target, method, stopTime, tag, width_ms)
 %     stopTime : seconds (default [] = keep 60)
 %     tag      : name for analysis/results/<tag>.mat (default 'baseline_raw'; 'none' = don't save)
 %     width_ms : Kalman blanking window in ms (default [] = keep 12 ms)
+%     cfg      : struct with .model (default 'Estimationdataset1'), .dataFile
+%                (default SimulnkModel/dataset1.mat), .fs (default 4096) -
+%                e.g. a model built by analysis250/build_model.m
 %
 %   The .slx file on disk is never modified: any changes are made to the loaded
 %   copy, which is closed without saving. Extra signals that the model does not
@@ -26,15 +29,19 @@ if nargin < 2, method = []; end
 if nargin < 3, stopTime = []; end
 if nargin < 4 || isempty(tag), tag = 'baseline_raw'; end
 if nargin < 5, width_ms = []; end
+if nargin < 6, cfg = struct(); end
 
 here  = fileparts(mfilename('fullpath'));
 root  = fileparts(here);
-mdl   = 'Estimationdataset1';
 addpath(fullfile(root, 'SimulnkModel'));
+if ~isfield(cfg, 'model'),    cfg.model = 'Estimationdataset1'; end
+if ~isfield(cfg, 'dataFile'), cfg.dataFile = fullfile(root, 'SimulnkModel', 'dataset1.mat'); end
+if ~isfield(cfg, 'fs'),       cfg.fs = 4096; end
+mdl = cfg.model;
 outdir = fullfile(here, 'results');
 if ~exist(outdir, 'dir'), mkdir(outdir); end
 
-S = load(fullfile(root, 'SimulnkModel', 'dataset1.mat'), 'rawNot');
+S = load(cfg.dataFile, 'rawNot');
 rawNot = S.rawNot;
 
 if bdIsLoaded(mdl), close_system(mdl, 0); end
@@ -69,6 +76,7 @@ logsig(mdl, [mdl '/Add'], 1, 'rawArt');                   % raw + stimulation ar
 logsig(mdl, [mdl '/Kalman filter'], 1, 'kalBP');           % Kalman + bandpass (phase-estimator input)
 logsig(mdl, [mdl '/Kalman filter/MATLAB Function1'], 1, 'kal'); % Kalman output before bandpass
 logsig(mdl, [mdl '/Stimulation Genarator'], 1, 'artifact');% injected artifact
+logsig(mdl, [mdl '/From' newline 'Workspace'], 1, 'clean'); % artifact-free input as the model sees it
 set_param(mdl, 'SignalLogging', 'on', 'SignalLoggingName', 'logsout');
 
 fprintf('Simulating %s (target=%s, method=%s, stop=%s)...\n', mdl, ...
@@ -82,7 +90,8 @@ if ~isempty(out.ErrorMessage), error(out.ErrorMessage); end
 
 % ---- collect ----
 res = struct();
-res.fs = 4096;
+res.fs = cfg.fs;
+res.model = mdl;
 res.target = target; if isempty(res.target), res.target = 3*pi/4; end
 res.method = str2double(get_param([mdl '/Constant'], 'Value'));
 res.stopTime = str2double(get_param(mdl, 'StopTime'));
@@ -96,7 +105,7 @@ for k = 1:numel(names)
     end
 end
 ls = out.logsout;
-for nm = {'stim','rawArt','kalBP','kal','artifact'}
+for nm = {'stim','rawArt','kalBP','kal','artifact','clean'}
     e = ls.getElement(nm{1});
     res.(nm{1}) = squeeze(e.Values.Data);
     if strcmp(nm{1}, 'stim'), res.t = e.Values.Time; end
